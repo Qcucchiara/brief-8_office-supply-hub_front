@@ -2,8 +2,8 @@ import React from "react";
 
 export const Footer = () => {
   return (
-    <footer className="bg-gray-200">
-      <div className="container mx-auto px-6 py-3 flex justify-between items-center">
+    <footer className="w-[100%] bg-gray-200">
+      <div className="container mx-auto flex items-center justify-between px-6 py-3">
         <a
           href="#"
           className="text-xl font-bold text-gray-500 hover:text-gray-400"

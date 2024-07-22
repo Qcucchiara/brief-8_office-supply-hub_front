@@ -1,26 +1,28 @@
 "use client";
-import { ProductCard } from "@/components/listElements/ProductCard";
-import { product } from "@/services/ecommerce_api";
-import React, { useEffect, useState } from "react";
+import { Header } from "@/components/Sections/headers/Header";
+import { CategoriesList } from "@/components/Sections/main/CategoriesList";
+import ProductsList from "@/components/Sections/main/ProductsList";
+import Image from "next/image";
+import React from "react";
 
 const page = () => {
-  const [productData, setProductData] = useState<any>();
-
-  useEffect(() => {
-    product.prototype
-      .findOne("d3832ff1-0815-401d-bfef-a1395a4f6250")
-      .then(({ data }) => {
-        setProductData(data);
-        console.log(data);
-      });
-  }, []);
   return (
-    // <main>
-    //   <h1>OFFICE SUPPLY HUB</h1>
-    //   <Button>Signup</Button>
-    //   <Image src={""} alt={""} height={300} width={640} />
-    // </main>
-    <ProductCard productData={productData} />
+    <>
+      <Header />
+      <main>
+        <h1 className="max-w-[800px]:top-0 absolute right-20 top-32 text-4xl font-bold">
+          OFFICE SUPPLY HUB
+        </h1>
+        <Image
+          src={"/landing-background-image.png"}
+          alt={""}
+          width={2000}
+          height={1000}
+        />
+        <ProductsList />
+        <CategoriesList />
+      </main>
+    </>
   );
 };
 

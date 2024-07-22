@@ -6,7 +6,7 @@ export interface Signup {
   password: string;
   confirmPassword: string;
   pseudo: string;
-  avatar?: any;
+  avatar?: string;
 }
 
 export interface Signin {
@@ -26,11 +26,6 @@ export interface Category {
 }
 
 // ORDER
-export interface CreateEmptyOrder {
-  user_id: string;
-  status?: string;
-}
-
 export interface UpdateOrderStatus {
   status: string;
 }
@@ -38,6 +33,7 @@ export interface UpdateOrderStatus {
 export interface CreateOrderElement {
   product_id: string;
   order_id: string;
+  cartElement_id: string;
   quantity: number;
 }
 
@@ -54,6 +50,11 @@ export interface CreateProduct {
   stock: number;
   promo?: number;
   categories_ids: string[];
+}
+
+export interface CartElement {
+  product_id?: string;
+  quantity: number;
 }
 
 export interface UpdateProduct {

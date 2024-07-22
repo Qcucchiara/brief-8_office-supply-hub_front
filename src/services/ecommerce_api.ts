@@ -1,6 +1,7 @@
+"use client";
 import {
+  CartElement,
   Category,
-  CreateEmptyOrder,
   CreateOrderElement,
   CreateProduct,
   Signin,
@@ -11,116 +12,160 @@ import {
 } from "@/utils/types/request";
 import axios from "axios";
 
-export class apiBackend {
-  constructor() {}
-  backend = axios.create({
-    baseURL: process.env.NEXT_PUBLIC_API_BACKEND_URL,
+export const backend = axios.create({
+  baseURL: process.env.NEXT_PUBLIC_API_BACKEND_URL,
 
-    headers: {
-      "content-type": "application/json;charset=utf-8",
-      "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Methods": "*",
-    },
-  });
-}
+  headers: {
+    "content-type": "application/json;charset=utf-8",
+    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Methods": "*",
+    Authorization: `Bearer ${typeof window !== "undefined" && window.localStorage.getItem("token")}`,
+  },
+});
 
-export class auth extends apiBackend {
-  constructor() {
-    super();
-  }
-  register = (data: Signup) => {
+export const handleAuth = {
+  register: async (form: Signup, refFile: any) => {
     const config = {
       headers: {
         "Content-Type": "multipart/form-data",
       },
     };
-    return this.backend.post("/auth/signup", data, config);
-  };
-  login = (data: Signin) => {
-    return this.backend.post("/auth/signin", data);
-  };
-}
+    const data = new FormData();
+    data.append("first_name", form.first_name);
+    data.append("last_name", form.last_name);
+    data.append("email", form.email);
+    data.append("password", form.password);
+    data.append("confirmPassword", form.first_name);
+    data.append("pseudo", form.pseudo);
+    console.log(form.avatar);
+    form.avatar && data.append("avatar", await refFile.current.files[0]);
 
-export class category extends apiBackend {
-  constructor() {
-    super();
-  }
-  create = (data: Category) => {
-    this.backend.post("/category", data);
-  };
-  findAll = () => {
-    this.backend.get("/category");
-  };
-  findOne = (id: string) => {
-    this.backend.get(`/category/${id}`);
-  };
-  update = (id: string, data: Category) => {
-    this.backend.patch(`/category/${id}`, data);
-  };
-  remove = (id: string) => {
-    this.backend.delete(`/category/${id}`);
-  };
-}
+    return backend.post("/auth/signup", data, config);
+  },
+  login: (data: Signin) => {
+    return backend.post("/auth/signin", data);
+  },
+};
 
-export class order extends apiBackend {
-  constructor() {
-    super();
-  }
-  createEmptyOrder = (data: CreateEmptyOrder) => {
-    this.backend.post("/order", data);
-  };
-  createOrderElement = (data: CreateOrderElement) => {
-    this.backend.post("/order/element", data);
-  };
-  findAll = () => {
-    this.backend.get("/order");
-  };
-  findOne = (id: string) => {
-    this.backend.get(`/order/${id}`);
-  };
-  updateOrderStatus = (id: string, data: UpdateOrderStatus) => {
-    this.backend.patch(`/order/${id}/status`, data);
-  };
-  updateElementQuantity = (id: string, data: UpdateOrderElementQuantity) => {
-    this.backend.patch(`/order/${id}/quantity`, data);
-  };
-  removeElement = (id: string) => {
-    this.backend.delete(`/order/element/${id}`);
-  };
-  remove = (id: string) => {
-    this.backend.delete(`/order/${id}`);
-  };
-}
+export const handleCategory = {
+  create: (data: Category) => {
+    return backend.post("/category", data);
+  },
+  findAll: (skip: number, take: number) => {
+    return backend.get(`/category?skip=${skip}&take=${take}`);
+  },
+  findOne: (id: string) => {
+    return backend.get(`/category/${id}`);
+  },
+  update: (id: string, data: Category) => {
+    return backend.patch(`/category/${id}`, data);
+  },
+  remove: (id: string) => {
+    return backend.delete(`/category/${id}`);
+  },
+};
 
-export class product extends apiBackend {
-  constructor() {
-    super();
-  }
-  create = (data: CreateProduct) => {
-    this.backend.post("/product", data);
-  };
-  findAll = () => {
-    this.backend.get("/product");
-  };
-  findOne(id: string) {
-    return this.backend.get(`/product/${id}`);
-  }
-  update = (id: string, data: UpdateProduct) => {
-    this.backend.patch(`/product/${id}`, data);
-  };
-  remove = (id: string) => {
-    this.backend.delete(`/product/${id}`);
-  };
-}
+export const handleOrder = {
+  order: {
+    createEmpty: () => {
+      return backend.post("/order");
+    },
+    findAll: (skip: number, take: number) => {
+      return backend.get(`/order?skip=${skip}&take=${take}`);
+    },
+    findFromUser: (skip: number, take: number) => {
+      console.log("object");
+      return backend.get(`/order/user?skip=${skip}&take=${take}`);
+    },
+    findOne: (id: string) => {
+      return backend.get(`/order/${id}`);
+    },
+    updateStatus: (id: string, data: UpdateOrderStatus) => {
+      return backend.patch(`/order/${id}/status`, data);
+    },
+    remove: (id: string) => {
+      return backend.delete(`/order/${id}`);
+    },
+  },
+  orderElement: {
+    create: (data: CreateOrderElement) => {
+      return backend.post("/order/element", data);
+    },
+    updateQuantity: (id: string, data: UpdateOrderElementQuantity) => {
+      return backend.patch(`/order/${id}/quantity`, data);
+    },
+    remove: (id: string) => {
+      return backend.delete(`/order/element/${id}`);
+    },
+  },
+};
 
-export class review extends apiBackend {
-  constructor() {
-    super();
-  }
-}
+export const handleProduct = {
+  create: (data: CreateProduct) => {
+    return backend.post("/product", data);
+  },
+  findAll: (skip: number, take: number) => {
+    typeof window !== "undefined" &&
+      console.log(window.localStorage.getItem("token"));
+    return backend.get(`/product?skip=${skip}&take=${take}`);
+  },
+  findOne: (param: string) => {
+    return backend.get(`/product/${param}`);
+  },
+  findOneJoinCart: (id: string) => {
+    return backend.get(`/product/cart/${id}`);
+  },
+  update: (id: string, data: UpdateProduct) => {
+    return backend.patch(`/product/${id}`, data);
+  },
+  remove: (id: string) => {
+    return backend.delete(`/product/${id}`);
+  },
+};
 
-export class user extends apiBackend {
-  constructor() {
-    super();
-  }
-}
+export const handleCart = {
+  create: (data: CartElement) => {
+    return backend.post("/cart", data);
+  },
+  find: (skip: number, take: number) => {
+    return backend.get(`/cart?skip=${skip}&take=${take}`);
+  },
+  update: (id: string, data: CartElement) => {
+    return backend.patch(`/cart/${id}`, data);
+  },
+  remove: (id: string) => {
+    return backend.delete(`/cart/${id}`);
+  },
+};
+
+export const handleUser = {
+  findAll: () => {
+    return backend.get("/user");
+  },
+  findOne: (id: string) => {
+    return backend.get(`/user/${id}`);
+  },
+  changeRole: (idUser: string, idRole: string) => {
+    return backend.patch(`/user/${idUser}/${idRole}`);
+  },
+  remove: (id: string) => {
+    return backend.delete(`/user/${id}`);
+  },
+};
+export const handleRole = {
+  all: () => {
+    return backend.get("/role");
+  },
+};
+
+// export class review extends apiBackend {
+//   constructor() {
+//     super();
+//   }
+// }
+
+// export class user extends apiBackend {
+//   constructor() {
+//     super();
+//   }
+// }
