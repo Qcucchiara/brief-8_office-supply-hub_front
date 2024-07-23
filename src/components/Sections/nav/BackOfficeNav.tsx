@@ -5,11 +5,16 @@ import {
   ResizablePanel,
   ResizablePanelGroup,
 } from "@/components/ui/resizable";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
 
 export const BackOfficeNav = () => {
   return (
     <nav
-      className="fixed z-50 mt-3 h-full w-60 flex-col space-y-2 border-r-2 border-gray-200 bg-white p-2"
+      className="fixed z-50 mt-3 h-full flex-col space-y-2 bg-white p-2"
       x-show="asideOpen"
     >
       <ul>
@@ -22,17 +27,6 @@ export const BackOfficeNav = () => {
               <i className="bx bx-home"></i>
             </span>
             <span>landing page settings</span>
-          </Link>
-        </li>
-        <li>
-          <Link
-            href="/back-office/catalog"
-            className="flex items-center space-x-1 rounded-md px-2 py-3 hover:bg-gray-100 hover:font-bold"
-          >
-            <span className="text-2xl">
-              <i className="bx bx-cart"></i>
-            </span>
-            <span>catalog management</span>
           </Link>
         </li>
         <li>
@@ -65,9 +59,16 @@ export const BackOfficeNav = () => {
             <span className="text-2xl">
               <i className="bx bx-user"></i>
             </span>
-            <span>inventory management</span>
+            <span>product management</span>
           </Link>
         </li>
+        <Collapsible>
+          <CollapsibleTrigger>Can I use this in my project?</CollapsibleTrigger>
+          <CollapsibleContent>
+            Yes. Free to use for personal and commercial projects. No
+            attribution required.
+          </CollapsibleContent>
+        </Collapsible>
       </ul>
     </nav>
   );

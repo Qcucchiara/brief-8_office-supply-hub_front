@@ -29,6 +29,7 @@ export interface Product {
   promo: number;
   createdAt: string;
   updatedAt: string;
+  _count: { Order_has_Product: number };
 }
 
 export interface ProductJoinCategory extends Product {

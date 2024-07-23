@@ -29,6 +29,11 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { BackOfficeNav } from "../nav/BackOfficeNav";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
 
 export const HeaderAdmin = () => {
   const [categoryList, setCategoryList] = useState<Category[]>();
@@ -82,14 +87,79 @@ export const HeaderAdmin = () => {
                 Admin Panel
               </SheetTrigger>
               <SheetContent side={"left"} className="w-[300px] sm:w-[265px]">
-                <BackOfficeNav />
+                <ul>
+                  <li>
+                    <Link
+                      href="/back-office/landing-page"
+                      className="flex items-center space-x-1 rounded-md px-2 py-3 hover:bg-gray-100 hover:font-bold"
+                    >
+                      <span className="text-2xl">
+                        <i className="bx bx-home"></i>
+                      </span>
+                      <span>landing page settings</span>
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      href="/back-office/categories"
+                      className="flex items-center space-x-1 rounded-md px-2 py-3 hover:bg-gray-100 hover:font-bold"
+                    >
+                      <span className="text-2xl">
+                        <i className="bx bx-shopping-bag"></i>
+                      </span>
+                      <span>categories management</span>
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      href="/back-office/accounts"
+                      className="flex items-center space-x-1 rounded-md px-2 py-3 hover:list-disc hover:bg-gray-100 hover:font-bold"
+                    >
+                      <span className="text-2xl">
+                        <i className="bx bx-heart"></i>
+                      </span>
+                      <span>accounts management</span>
+                    </Link>
+                  </li>
+                  <li>
+                    <Collapsible>
+                      <CollapsibleTrigger className="flex items-center space-x-1 rounded-md px-2 py-3 hover:bg-gray-100 hover:font-bold">
+                        <span className="text-2xl">
+                          <i className="bx bx-heart"></i>
+                        </span>
+                        <span>product management</span>
+                      </CollapsibleTrigger>
+                      <CollapsibleContent>
+                        <Link
+                          href="/back-office/inventory/form"
+                          className="flex items-center space-x-1 rounded-md px-6 py-3 text-sm hover:bg-gray-100 hover:font-bold"
+                        >
+                          <span className="text-2xl">
+                            <i className="bx bx-heart"></i>
+                          </span>
+                          <span>new Product</span>
+                        </Link>
+                        <Link
+                          href="/back-office/inventory"
+                          className="flex items-center space-x-1 rounded-md px-6 py-3 text-sm hover:bg-gray-100 hover:font-bold"
+                        >
+                          <span className="text-2xl">
+                            <i className="bx bx-heart"></i>
+                          </span>
+                          <span>list products</span>
+                        </Link>
+                      </CollapsibleContent>
+                    </Collapsible>
+                  </li>
+                </ul>
+                {/* <BackOfficeNav /> */}
               </SheetContent>
             </Sheet>
           </NavigationMenuItem>
         </NavigationMenuList>
       </NavigationMenu>
       <Link href={"/auth/sign"}>
-        <Button variant={"outline"}>login</Button>
+        {/* <Button variant={"outline"}>logout</Button> */}
       </Link>
     </header>
   );

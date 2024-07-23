@@ -101,8 +101,32 @@ export const handleOrder = {
 };
 
 export const handleProduct = {
-  create: (data: CreateProduct) => {
-    return backend.post("/product", data);
+  create: async (data: CreateProduct, refImage: any) => {
+    let form;
+    const config = {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    };
+    const imageFormData = new FormData();
+    data.image &&
+      imageFormData.append("image", await refImage.current.files[0]);
+    await backend
+      .post("/image/src/upload/product", imageFormData, config)
+      .then((res) => {
+        console.log(res.data);
+        form = {
+          name: data.name,
+          price: data.price,
+          stock: data.stock,
+          promo: data.promo ? data.promo / 100 : 0,
+          categories_ids: data.categories_ids,
+          description: data.description,
+          image: res.data.filename,
+        };
+        console.log(form);
+      });
+    return backend.post("/product", form);
   },
   findAll: (skip: number, take: number) => {
     typeof window !== "undefined" &&

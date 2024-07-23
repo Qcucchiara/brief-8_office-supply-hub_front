@@ -44,20 +44,12 @@ export const formLogin = z.object({
   password: z.string(),
 });
 
-export const formRole = z.object({
+export const formProduct = z.object({
   name: z.string(),
-});
-
-export const formPromoCode = z.object({
-  name: z.string(),
-  value: z.number().min(1),
-});
-
-export const formTrade = z.object({
-  id_offer: z.string(),
-});
-
-export const formOffer = z.object({
-  id_crypto: z.string(),
-  amount: z.string(),
+  price: z.number().min(0),
+  stock: z.number().int().min(0),
+  promo: z.number().min(0).max(1).optional(),
+  categories_ids: z.array(z.string()),
+  description: z.string(),
+  image: z.custom<string>().optional(),
 });

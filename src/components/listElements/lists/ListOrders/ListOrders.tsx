@@ -41,7 +41,7 @@ export const ListOrders = () => {
       console.log(res);
       setOrders(res.data);
     });
-  }, []);
+  }, [refresh]);
 
   useEffect(() => {
     if (orders) {

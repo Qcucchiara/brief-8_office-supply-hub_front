@@ -44,12 +44,12 @@ export interface UpdateOrderElementQuantity {
 // PRODUCT
 export interface CreateProduct {
   name: string;
-  image: any;
-  description: string;
   price: number;
   stock: number;
   promo?: number;
   categories_ids: string[];
+  description: string;
+  image?: any;
 }
 
 export interface CartElement {
